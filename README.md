@@ -1,1 +1,0 @@
-# adonis-mercure-chat
