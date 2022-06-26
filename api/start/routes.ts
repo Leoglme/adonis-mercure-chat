@@ -1,25 +1,32 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/cart.ts
-| ├── start/routes/customer.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/cart'
-| import './routes/customer'
-|
-*/
+import Route from "@ioc:Adonis/Core/Route"
+import got from "got"
 
-import Route from '@ioc:Adonis/Core/Route'
+Route.get("/", async () => {
+  return { hello: "world" }
+})
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+/* Jwt.io payload =>
+*
+* {
+  "mercure": {
+    "publish": [
+      "*"
+    ]
+  }
+}
+* */
+
+Route.get("/alert", () => {
+  const data = { foo: "bar" }
+
+  got.post("http://localhost:1405/.well-known/mercure", {
+    headers: {
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjdXJlIjp7InB1Ymxpc2giOlsiKiJdfX0.obDjwCgqtPuIvwBlTxUEmibbBf0zypKCNzNKP7Op2UM'
+    },
+    form: [
+      ["topic", "/alert"],
+      ["data", JSON.stringify(data)]
+    ]
+  })
+  return { status: "Ok" }
 })
