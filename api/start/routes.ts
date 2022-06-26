@@ -12,18 +12,18 @@ Route.get("/auth/:id", async () => {
   })
 })
 
-Route.get("/public", () => {
-  const data = { foo: "bar" }
+Route.post("/chat/public", async ({ request }) => {
+  const message: string = await request.input('message')
 
-  new Update(["/alert"], data).send()
+  new Update(["/chat"], { message }).send()
 
-  return { status: "Ok" }
+  return { message }
 })
 
 Route.get("/private", () => {
   const data = { foo: "bar" }
 
-  new Update(["/alert"], data, true).send()
+  new Update(["/chat"], data, true).send()
 
   return { status: "Ok" }
 })
